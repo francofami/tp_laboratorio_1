@@ -1,0 +1,35 @@
+# depslib dependency file v1.0
+1523023294 source:d:\yo\tp\funciones.c
+	"funciones.h"
+
+1523021166 source:d:\yo\tp\ingresonumeros.c
+
+1523027632 source:d:\yo\tp\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+	"factorial.h"
+
+1523026285 d:\yo\tp\funciones.h
+
+1523027718 source:d:\yo\tp\factorial.c
+	"factorial.h"
+
+1523024812 d:\yo\tp\factorial.h
+
+1523027790 source:d:\usuarios\franco\downloads\tp\tp\factorial.c
+	"factorial.h"
+
+1523140130 d:\usuarios\franco\downloads\tp\tp\factorial.h
+
+1523140269 source:d:\usuarios\franco\downloads\tp\tp\funciones.c
+	"funciones.h"
+
+1523140017 d:\usuarios\franco\downloads\tp\tp\funciones.h
+
+1523027632 source:d:\usuarios\franco\downloads\tp\tp\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+	"factorial.h"
+
