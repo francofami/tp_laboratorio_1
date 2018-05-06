@@ -1,7 +1,7 @@
 #ifndef FACTORIAL_H_INCLUDED
 #define FACTORIAL_H_INCLUDED
 
-/** \brief Calcula el factorial de un número.
+/** \brief Calcula el factorial de un nÃºmero.
  *
  * \param numero1 float El numero A.
  * \return float El resultado de hacer A factorial (A!).
