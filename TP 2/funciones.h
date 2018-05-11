@@ -6,9 +6,11 @@ typedef struct {
     char nombre[50];
     int edad;
     int estado;
-    int dni;
+    long int dni;
 
 }EPersona;
+
+#endif // FUNCIONES_H_INCLUDED
 
 /**
  * Obtiene el primer indice libre del array.
@@ -71,4 +73,18 @@ void inicializarEstados(EPersona lista[], int);
  */
 void imprimirGrafico(EPersona lista[], int);
 
-#endif // FUNCIONES_H_INCLUDED
+/** \brief Valida que solo se ingresen numeros
+ *
+ * \param numero[] char El array que contiene al numero
+ * \return int Devuelve 0 si contiene un caracter distinto a un numero, de lo contrario devuelve 1.
+ *
+ */
+int validarNumero(char numero[]);
+
+/** \brief Valida que solo se ingresen caracteres de la A a la Z (incluyendo mayúsculas, minúsculas y espacios)
+ *
+ * \param nombre[] char El array que contiene al nombre.
+ * \return int Devuelve 0 si contiene un caracter distinto a un caracter de la A a la Z (incluyendo mayúsculas, minúsculas y espacios), de lo contrario devuelve 1.
+ *
+ */
+int validarNombre(char nombre[]);

@@ -8,6 +8,7 @@ int main()
 {
     char seguir='s';
     int opcion=0;
+    char opcionString[2];
 
     EPersona lista[LENGTH];
 
@@ -21,7 +22,12 @@ int main()
         printf("4- Imprimir grafico de edades\n");
         printf("5- Salir\n");
 
-        scanf("%d",&opcion);
+        do{
+            fflush(stdin);
+            scanf("%s", &opcionString);
+        }while(validarNumero(opcionString)==0);
+
+        opcion=atoi(opcionString);
 
         system("cls");
 

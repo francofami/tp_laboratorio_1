@@ -11,3 +11,15 @@
 	<stdio.h>
 	<string.h>
 
+1525999409 source:c:\users\franco\downloads\tp_laboratorio_1-master\tp_laboratorio_1-master\tp 2\funciones.c
+	"funciones.h"
+	<stdio.h>
+	<string.h>
+
+1525999440 c:\users\franco\downloads\tp_laboratorio_1-master\tp_laboratorio_1-master\tp 2\funciones.h
+
+1525998976 source:c:\users\franco\downloads\tp_laboratorio_1-master\tp_laboratorio_1-master\tp 2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.h"
+

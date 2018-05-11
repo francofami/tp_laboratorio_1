@@ -18,18 +18,34 @@ void inicializarEstados(EPersona lista[], int length)
 void altaPersona(EPersona lista[], int length)
 {
     int posicionVacia;
+    char validaEdad[3];
+    char validaDni[10];
 
     posicionVacia=obtenerEspacioLibre(lista, length);
 
     if(posicionVacia!=-1)
     {
-        printf("\nIngrese nombre: ");
-        fflush(stdin);
-        gets(lista[posicionVacia].nombre);
-        printf("\nIngrese edad: ");
-        scanf("%d",&lista[posicionVacia].edad);
-        printf("\nIngrese DNI: ");
-        scanf("%d",&lista[posicionVacia].dni);
+        do{
+            printf("\nIngrese nombre: ");
+            fflush(stdin);
+            gets(lista[posicionVacia].nombre);
+        }while(validarNombre(lista[posicionVacia].nombre)==0);
+
+
+        do{
+            printf("\nIngrese edad: ");
+            scanf("%s",&validaEdad);
+        }while(validarNumero(validaEdad)==0);
+
+        lista[posicionVacia].edad=atoi(validaEdad);
+
+        do{
+            printf("\nIngrese DNI (sin puntos ni comas): ");
+            scanf("%s",&validaDni);
+        }while(validarNumero(validaDni)==0);
+
+        lista[posicionVacia].dni=atoi(validaDni);
+
         lista[posicionVacia].estado=1;
     }
     else
@@ -58,20 +74,23 @@ void bajaPersona(EPersona lista[], int length)
     for(i=0;i<length;i++)
     {
         if(lista[i].estado==1)
-        printf("Nombre: %s Edad: %d DNI: %d\n", lista[i].nombre, lista[i].edad, lista[i].dni);
+        printf("Nombre: %s     -     Edad: %d     -    DNI: %d\n", lista[i].nombre, lista[i].edad, lista[i].dni);
     }
 
+    printf("Ingrese dni a ser dado de baja: ");
+    scanf("%d",&dni);
+    indiceBorrar=buscarPorDni(lista, dni,length);
 
-    do{
-        printf("Ingrese dni a ser dado de baja: ");
-        scanf("%d",&dni);
-        indiceBorrar=buscarPorDni(lista, dni,length);
-    }while(indiceBorrar==-1);
+    if(indiceBorrar!=-1)
+    {
+        lista[indiceBorrar].estado=0;
+        strcpy(lista[indiceBorrar].nombre,"");
+        lista[indiceBorrar].edad=0;
+        lista[indiceBorrar].dni=0;
+    }
+    else
+        printf("El usuario seleccionado no existe. \n");
 
-    lista[indiceBorrar].estado=0;
-    strcpy(lista[indiceBorrar].nombre,"");
-    lista[indiceBorrar].edad=0;
-    lista[indiceBorrar].dni=0;
 }
 
 int buscarPorDni(EPersona lista[], int dni, int length)
@@ -188,4 +207,38 @@ void imprimirGrafico(EPersona lista[], int length)
     printf("<18      ");
     printf("19-35      ");
     printf(">35\n");
+}
+
+int validarNumero(char numero[])
+{
+    int retorno=1;
+
+    int i;
+    for(i=0; i<strlen(numero); i++)
+    {
+        if(!(isdigit(numero[i])))
+        {
+            retorno=0;
+            printf("Error, ingrese solo numeros. \n");
+            break;
+        }
+    }
+
+    return retorno;
+}
+
+int validarNombre(char nombre[])
+{
+
+    int retorno=1;
+    int i;
+    for(i=0 ; i<strlen(nombre); i++)
+    {
+        if(!(nombre[i]>=65 && nombre[i]<=90 || nombre[i]>=97 && nombre[i]<=122 || nombre[i]==32))
+        {
+            printf("Error, solo se pueden ingresar letras.");
+            retorno=0;
+        }
+    }
+    return retorno;
 }
