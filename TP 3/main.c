@@ -16,7 +16,7 @@ int main()
 
     inicializarPeliculas(pMovie,LENGTH);
 
-    if(!cargarArchivo(pMovie, LENGTH))
+    if(cargarArchivo(pMovie, LENGTH)!=-1)
 	{
 	    printf("Archivo cargado.\n");
 	}
@@ -67,21 +67,31 @@ int main()
                 break;
             case 5:
                 printf("\nGuardar cambios s/n ?: ");
-				opcion = tolower(getche());
 
-				if(opcion == 's')
-				{
-					if(guardarArchivo(pMovie, LENGTH))
-					{
-						printf("\nNo se pudo abrir el archivo\n");
-					}
-					else
-					{
-						printf("\nSe guardo la informacion con exito\n");
-					}
-				}
+				do{
+                    opcion = tolower(getche());
+
+
+                    if(opcion == 's')
+                    {
+                        if(guardarArchivo(pMovie, LENGTH)==-1)
+                        {
+                            printf("\nNo se pudo abrir el archivo\n");
+                        }
+                        else
+                            {
+                            printf("\nSe guardo la informacion con exito\n");
+                            }
+                    }
+
+                    if(opcion == 'n')
+                    {
+                        break;
+                    }
+				}while(opcion!='s' && opcion!='n');
 
 				seguir='n';
+
                 break;
         }
     }

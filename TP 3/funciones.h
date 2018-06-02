@@ -21,11 +21,11 @@ typedef struct{
  */
 void inicializarPeliculas(EMovie *pMovie, int);
 
-/** \brief
+/** \brief Abre archivo que contiene peliculas y si no existe lo crea
  *
  * \param pMovie EMovie* El puntero que apunta a la direccion de memoria de la variable movie perteneciente a la estructura EMovie.
  * \param int Cantidad de peliculas que se pueden cargar
- * \return int retorna 0 o 1 de acuerdo a si pudo agregar la pelicula o no
+ * \return int retorna 1 o -1 de acuerdo a si pudo agregar la pelicula o no
  *
  */
 int cargarArchivo(EMovie *pMovie,int);
@@ -86,7 +86,7 @@ int mostrarPeliculas(EMovie *pMovie,int length);
  *
  * \param pMovie EMovie* El puntero que apunta a la direccion de memoria de la variable movie perteneciente a la estructura EMovie.
  * \param length int Cantidad de peliculas que se pueden cargar
- * \return int retorna 0 o 1 de acuerdo a si pudo agregar la pelicula o no
+ * \return int retorna -1 o 1 de acuerdo a si pudo agregar la pelicula o no
  *
  */
 int guardarArchivo(EMovie *pMovie,int length);

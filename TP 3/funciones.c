@@ -193,9 +193,15 @@ int modificarPelicula(EMovie *pMovie, int length)
                break;
             case 4:
                 {
-                    printf("%s\n\nIngrese nueva descripcion: ", (pMovie+(opcion-1))->descripcion);
+                    printf("%s\n\n", (pMovie+(opcion-1))->descripcion);
+                    printf("Desea editar descripcion? s/n\n");
                     fflush(stdin);
-                    gets((pMovie+(opcion-1))->descripcion);
+                    if(getchar()=='s')
+                    {
+                        printf("Ingrese nueva descripcion: ");
+                        fflush(stdin);
+                        gets((pMovie+(opcion-1))->descripcion);
+                    }
                 }
                 break;
             case 5:
@@ -270,19 +276,15 @@ int mostrarPeliculas(EMovie *pMovie,int length)
 int guardarArchivo(EMovie *pMovie,int length)
 {
 	FILE *A;
-	int flag=0;
+	int flag=-1;
 
     A=fopen("archivo.bin","wb");
 
-    if(A == NULL)
-    {
-        flag=1;
-    }
-    else
+    if(A!=NULL)
     {
         fwrite(pMovie,sizeof(EMovie),length,A);
         fclose(A);
-        flag=0;
+        flag=1;
     }
 
 	return flag;
