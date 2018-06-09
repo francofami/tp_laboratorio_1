@@ -60,7 +60,7 @@ ArrayList* al_newArrayList(void);
  * \return int Return (-1) if Error [pList or pElement are NULL pointer] - (0) if Ok
  *
  */
-int al_add(ArrayList* this,void* pElement);
+int al_add(ArrayList* pList,void* pElement);
 
 
 /** \brief  Delete arrayList

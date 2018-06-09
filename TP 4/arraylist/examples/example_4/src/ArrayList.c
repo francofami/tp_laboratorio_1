@@ -67,12 +67,40 @@ ArrayList* al_newArrayList(void)
  * \return int Return (-1) if Error [pList or pElement are NULL pointer] - (0) if Ok
  *
  */
-int al_add(ArrayList* this, void* pElement)
+int al_add(ArrayList* this,void* pElement)
 {
-    int returnAux = -1;
+    int returnAux=-1, flag=0;
+    void** aux;
+
+    if(this!=NULL && pElement!=NULL)
+    {
+        if(this->size==this->reservedSize) //Si quiero cargar mas datos de los que elegi por defecto voy a hacer realloc
+        {
+            aux= (void**) realloc(this->pElements, sizeof(void*)*(this->reservedSize + AL_INCREMENT));
+            if(aux!=NULL)
+            {
+                this->pElements = aux;
+                this->reservedSize = this->reservedSize + AL_INCREMENT;
+            }
+            else
+            {
+                flag=1;
+            }
+        } //Esta funcion es resize up, despues la llamo, tambien la necesito para al_push, etc...
+
+        //Con el size podemos saber en que posicion vamos a cargar la estructura
+        if(flag==0) //Si pudo agregar el elemento entonces hago lo siguiente:
+        {
+            this->pElements[this->size] = pElement;
+            this->size++; //Para que cuando tenga que cargar otro elemento no me lo pise
+            returnAux=0;
+        }
+
+    }
 
     return returnAux;
 }
+
 
 /** \brief  Delete arrayList
  * \param pList ArrayList* Pointer to arrayList
@@ -82,6 +110,8 @@ int al_add(ArrayList* this, void* pElement)
 int al_deleteArrayList(ArrayList* this)
 {
     int returnAux = -1;
+
+
 
     return returnAux;
 }
@@ -94,6 +124,11 @@ int al_deleteArrayList(ArrayList* this)
 int al_len(ArrayList* this)
 {
     int returnAux = -1;
+
+    if(this!=NULL)
+    {
+        returnAux=this->size;
+    }
 
     return returnAux;
 }
