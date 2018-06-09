@@ -21,12 +21,12 @@ ArrayList* al_newArrayList(void)
 {
     ArrayList* this;
     ArrayList* returnAux = NULL;
-    void* pElements;
-    this = (ArrayList *)malloc(sizeof(ArrayList));
+    void** pElements; //Esto seria nuestro puntero al array de punteros que apuntan a las direcciones de memoria de los empleados
+    this = (ArrayList *)malloc(sizeof(ArrayList)); //Crea espacio el el heap para this
 
     if(this != NULL)
     {
-        pElements = malloc(sizeof(void *)*AL_INITIAL_VALUE );
+        pElements = (void**) malloc(sizeof(void *)*AL_INITIAL_VALUE );
         if(pElements != NULL)
         {
             this->size=0;
@@ -52,7 +52,8 @@ ArrayList* al_newArrayList(void)
         }
         else
         {
-            free(this);
+            free(this); //Si no tengo espacio en memoria libero el Arraylist
+            this = NULL; //Si no encuentra el espacio en memoria thises igual a NULL
         }
     }
 
@@ -74,6 +75,7 @@ int al_add(ArrayList* this,void* pElement)
 
     if(this!=NULL && pElement!=NULL)
     {
+        //Armate una funcion para hacer realloc y llamala, porque voy a tener que utilizarla despues en otras funciones
         if(this->size==this->reservedSize) //Si quiero cargar mas datos de los que elegi por defecto voy a hacer realloc
         {
             aux= (void**) realloc(this->pElements, sizeof(void*)*(this->reservedSize + AL_INCREMENT));
@@ -91,7 +93,7 @@ int al_add(ArrayList* this,void* pElement)
         //Con el size podemos saber en que posicion vamos a cargar la estructura
         if(flag==0) //Si pudo agregar el elemento entonces hago lo siguiente:
         {
-            this->pElements[this->size] = pElement;
+            *(this->pElements+this->size) = pElement; //Si fuese un vector lo haria asi: this->pElements[this->size]
             this->size++; //Para que cuando tenga que cargar otro elemento no me lo pise
             returnAux=0;
         }
@@ -109,11 +111,15 @@ int al_add(ArrayList* this,void* pElement)
  */
 int al_deleteArrayList(ArrayList* this)
 {
-    int returnAux = -1;
+    int retorno=-1;
 
+    if(this!=NULL)
+    {
+        free(this);
+        retorno=0;
+    }
 
-
-    return returnAux;
+    return retorno;
 }
 
 /** \brief  Delete arrayList
@@ -144,6 +150,11 @@ void* al_get(ArrayList* this, int index)
 {
     void* returnAux = NULL;
 
+    if(this!=NULL && index>=0 && index<this->size)
+    {
+       returnAux = *(this->pElements+index);
+    }
+
     return returnAux;
 }
 
@@ -159,7 +170,20 @@ void* al_get(ArrayList* this, int index)
 int al_contains(ArrayList* this, void* pElement)
 {
     int returnAux = -1;
+    int i=0;
 
+    if(this!=NULL && pElement!=NULL)
+    {
+        for(i=0;i<this->size;i++)
+        {
+            if(this->pElements==pElement)
+            returnAux= 1;
+            break;
+        }
+    }
+        else
+            returnAux=0;
+    }
     return returnAux;
 }
 
@@ -176,6 +200,14 @@ int al_set(ArrayList* this, int index,void* pElement)
 {
     int returnAux = -1;
 
+
+
+    if(this!=NULL && index>=0 && index<this->size && pElement!=NULL)
+    {
+            returnAux=0;
+            *(this->pElements+index)=pElement;
+    }
+
     return returnAux;
 }
 
@@ -188,7 +220,14 @@ int al_set(ArrayList* this, int index,void* pElement)
  */
 int al_remove(ArrayList* this,int index)
 {
-    int returnAux = -1;
+    int returnAux=-1;
+
+    if(this!=NULL && index>=0 && index<this->size)
+    {
+        *(this->pElements+index) = NULL;
+        this->size--;
+        returnAux=0;
+    }
 
     return returnAux;
 }
@@ -203,6 +242,17 @@ int al_remove(ArrayList* this,int index)
 int al_clear(ArrayList* this)
 {
     int returnAux = -1;
+    int i;
+
+    if(this!=NULL)
+    {
+        for(i=0;i<=this->size;i++)
+        {
+            *(this->pElements+i) = NULL;
+        }
+        this->size=0;
+        returnAux=0;
+    }
 
     return returnAux;
 }
@@ -217,6 +267,8 @@ int al_clear(ArrayList* this)
 ArrayList* al_clone(ArrayList* this)
 {
     ArrayList* returnAux = NULL;
+
+
 
     return returnAux;
 }

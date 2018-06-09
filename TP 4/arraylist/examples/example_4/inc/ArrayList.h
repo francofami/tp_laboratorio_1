@@ -20,7 +20,7 @@
 #define __ARRAYLIST
 struct ArrayList{
 
-    void** pElements;
+    void** pElements; //Esto seria nuestro puntero al array de punteros que apuntan a los empleados
     int size;
     int reservedSize;
 

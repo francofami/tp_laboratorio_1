@@ -30,21 +30,21 @@ int main(void)
 {
         //startTesting(1); //al_newArrayList OK
         //startTesting(2); //al_add OK
-        startTesting(3);
+        //startTesting(3); //al_delete OK
         //startTesting(4); //al_len OK
-        //startTesting(5);
-        //startTesting(6);
-        //startTesting(7);
-        //startTesting(8);
-        //startTesting(9);
-        //startTesting(10);
-        //startTesting(11);
-        //startTesting(12);
-        //startTesting(13);
-        //startTesting(14);
-        //startTesting(15);
-        //startTesting(16);
-        //startTesting(17);
+        //startTesting(5); //al_get OK
+        startTesting(6); //al_contains
+        //startTesting(7); //al_set OK
+        //startTesting(8); //al_remove OK
+        //startTesting(9); //al_clear OK
+        //startTesting(10); //al_clone
+        //startTesting(11); //al_push
+        //startTesting(12); //al_indexOf
+        //startTesting(13); //al_isEmpty
+        //startTesting(14); //al_pop
+        //startTesting(15); //al_subList
+        //startTesting(16); //al_containsAll
+        //startTesting(17); //al_sort
 
     return 0;
 }
