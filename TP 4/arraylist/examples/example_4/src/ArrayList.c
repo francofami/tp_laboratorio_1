@@ -111,10 +111,15 @@ int al_add(ArrayList* this,void* pElement)
  */
 int al_deleteArrayList(ArrayList* this)
 {
-    int retorno=-1;
+    int retorno=-1,i;
 
     if(this!=NULL)
     {
+        for(i=0;i<this->size;i++)
+        {
+            al_remove(this,i);
+        }
+
         free(this);
         retorno=0;
     }
@@ -174,16 +179,18 @@ int al_contains(ArrayList* this, void* pElement)
 
     if(this!=NULL && pElement!=NULL)
     {
+        returnAux=0;
+
         for(i=0;i<this->size;i++)
         {
-            if(this->pElements==pElement)
-            returnAux= 1;
-            break;
+            if(*(this->pElements+i)==pElement)
+            {
+                returnAux=1;
+                break;
+            }
         }
     }
-        else
-            returnAux=0;
-    }
+
     return returnAux;
 }
 
@@ -268,7 +275,10 @@ ArrayList* al_clone(ArrayList* this)
 {
     ArrayList* returnAux = NULL;
 
-
+    if(this!=NULL)
+    {
+        returnAux=this;
+    }
 
     return returnAux;
 }
@@ -285,7 +295,23 @@ ArrayList* al_clone(ArrayList* this)
  */
 int al_push(ArrayList* this, int index, void* pElement)
 {
-    int returnAux = -1;
+    //Tengo que agregar un nuevo elemento al final que va a ser el pElement que me pasan
+    //Despues lo inserto en la posicion especificada y corro todos 1 lugar
+    int returnAux = -1,i;
+
+    if(this!=NULL && pElement!=NULL && index>=0 && index<=this->size) //En este caso <= porque aun no hice el al_add
+    {
+            al_add(this,pElement);
+
+            for(i=index;i<this->size;i++)
+            {
+                *(this->pElements+i+1)=*(this->pElements+i);
+            }
+
+            *(this->pElements+index)=pElement;
+
+            returnAux=0;
+    }
 
     return returnAux;
 }
@@ -301,6 +327,15 @@ int al_indexOf(ArrayList* this, void* pElement)
 {
     int returnAux = -1;
 
+    if(this!=NULL && pElement != NULL)
+    {
+        for(returnAux=0;returnAux<this->size;returnAux++)
+        {
+            if(*(this->pElements+returnAux)==pElement)
+            break;
+        }
+    }
+
     return returnAux;
 }
 
@@ -314,10 +349,16 @@ int al_isEmpty(ArrayList* this)
 {
     int returnAux = -1;
 
+    if(this!=NULL)
+    {
+        if(this->size==0)
+            returnAux=1;
+        else
+            returnAux=0;
+    }
+
     return returnAux;
 }
-
-
 
 
 /** \brief Remove the item at the given position in the list, and return it.
@@ -329,6 +370,12 @@ int al_isEmpty(ArrayList* this)
 void* al_pop(ArrayList* this,int index)
 {
     void* returnAux = NULL;
+
+    if(this!=NULL && index>=0 && index<this->size)
+    {
+        returnAux=*(this->pElements+index);
+        al_remove(this,index);
+    }
 
     return returnAux;
 }
@@ -346,6 +393,11 @@ ArrayList* al_subList(ArrayList* this,int from,int to)
 {
     void* returnAux = NULL;
 
+    if(this!=NULL && from>=0 && from<(this->size)-1 && to>=1 && to<=this->size)
+    {
+
+    }
+
     return returnAux ;
 }
 
@@ -361,7 +413,25 @@ ArrayList* al_subList(ArrayList* this,int from,int to)
  */
 int al_containsAll(ArrayList* this,ArrayList* this2)
 {
-    int returnAux = -1;
+    int returnAux = -1,i, flag=0;
+
+    if(this!=NULL && this2!=NULL)
+    {
+        for(i=0;i<this->size;i++)
+        {
+            if(*this->pElements+i!=*this2->pElements+i)
+            {
+                flag=1;
+                returnAux=0;
+                break;
+            }
+        }
+
+        if(flag==0)
+        {
+            returnAux=1;
+        }
+    }
 
     return returnAux;
 }
@@ -373,9 +443,47 @@ int al_containsAll(ArrayList* this,ArrayList* this2)
  * \return int Return (-1) if Error [pList or pFunc are NULL pointer]
  *                  - (0) if ok
  */
-int al_sort(ArrayList* this, int (*pFunc)(void* ,void*), int order)
+int al_sort(ArrayList* this, int (*pFunc)(void*,void*), int order)
 {
-    int returnAux = -1;
+    int returnAux = -1, i, j;
+    void* aux;
+
+    if(this!=NULL && pFunc!=NULL)
+    {
+        returnAux=0;
+
+        for(i=0;i<(this->size)-1;i++)
+        {
+            for(j=i+1;j<this->size;j++)
+            {
+                if(order==1)
+                {
+                    if(pFunc(*(this->pElements+i),*(this->pElements+j))==1)
+                    {
+                        aux=*(this->pElements+i);
+                        *(this->pElements+i)=*(this->pElements+j);
+                        *(this->pElements+j)=aux;
+                    }
+                }
+
+                else if(order==0)
+                {
+                    if(pFunc(*(this->pElements+i),*(this->pElements+j))==-1)
+                    {
+                        aux=*(this->pElements+i);
+                        *(this->pElements+i)=*(this->pElements+j);
+                        *(this->pElements+j)=aux;
+                    }
+                }
+                else
+                {
+                    returnAux=-1;
+                    break;
+                }
+
+            }
+        }
+    }
 
     return returnAux;
 }
@@ -389,6 +497,11 @@ int al_sort(ArrayList* this, int (*pFunc)(void* ,void*), int order)
 int resizeUp(ArrayList* this)
 {
     int returnAux = -1;
+
+    if(this!=NULL)
+    {
+        returnAux=0;
+    }
 
     return returnAux;
 
@@ -404,6 +517,11 @@ int expand(ArrayList* this,int index)
 {
     int returnAux = -1;
 
+    if(this!=NULL && index>=0 && index<this->size)
+    {
+        returnAux=0;
+    }
+
     return returnAux;
 }
 
@@ -416,6 +534,11 @@ int expand(ArrayList* this,int index)
 int contract(ArrayList* this,int index)
 {
     int returnAux = -1;
+
+    if(this!=NULL && index>=0 && index<this->size)
+    {
+        returnAux=0;
+    }
 
     return returnAux;
 }
