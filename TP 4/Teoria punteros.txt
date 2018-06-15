@@ -1,0 +1,57 @@
+1) Si trabajo con vectores en la pila:
+
+int vec[3];
+
+Desventajas: Se puede llenar la pila, el vector es estático.
+
+1') Si trabajo con un puntero que apunte a la direccion de memoria del vector:
+
+int* p;
+p = vec;
+
+Desventajas: sigue siendo estático, puede desbordar la pila. Es lo mismo que antes practicamente. Solo que ahora uso punteros.
+
+2) Si trabajo con puntero que apunte al heap.
+
+int* vec;
+vec = (int**) malloc(sizeof(int*)*3);
+
+En la pila voy a tener el puntero a vec.
+
+vec va a tener su direccion de memoria 
+
+En el montón voy a tener 3 lugares, en el primero voy a guardar la direccion de memoria de vec[0]
+En los otros dos voy a tener las direcciones de vec[1] y vec[2], todas direcciones consecutivas
+
+Ventajas: en la pila solo estoy guardando 4 bytes (el peso del puntero a vec).
+es dinámico, puedo agregar mas posiciones del vector en el heap.
+
+Desventajas: Si tengo que hacer un realloc voy a tener que mover mas peso de datos (el peso de lo que contenga cada vector).
+
+3) Si trabajo
+
+int* vec[3];
+
+En la pila voy a tener un puntero por cada dato que apunta a otro puntero en el montón.
+
+En el montón voy a tener punteros a cada posicion del puntero pero no en direcciones consecutivas
+
+Ventajas: No necesitamos memoria consecutiva para guardar los datos que querramos guardar.
+
+Desventajas: No puedo hacer un realloc de lo que se encuentra en la pila
+
+4) int** vec;
+vec = (int**) malloc(sizeof(int*)*3);
+
+En la pila voy a tener un puntero "vec" que guarda la direccion de memoria del primer puntero del array de punteros.
+
+En el montón voy a tener un array de punteros (consecutivos) (se manejan con aritmetica de punteros) 
+que apuntan a direcciones de memoria aleatorias que son las posiciones de vec.
+
+Ventajas: Puedo gestionar memoria dinámica
+Si tengo que mover datos solo tengo que mover direcciones de memoria que pesan solo 4 bytes.
+
+Si quiero acceder a la direccion de memoria de un elemento:
+*(vec+posicion)
+
+Eso se lo puedo pasar a una funcion mostrar, creo que habria que hacer *(*(vec+posicion))
