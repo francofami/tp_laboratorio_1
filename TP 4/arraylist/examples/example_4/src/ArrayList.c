@@ -70,35 +70,18 @@ ArrayList* al_newArrayList(void)
  */
 int al_add(ArrayList* this,void* pElement)
 {
-    int returnAux=-1, flag=0;
+    int returnAux=-1;
     void** aux;
 
     if(this!=NULL && pElement!=NULL)
     {
-        //Armate una funcion para hacer realloc y llamala, porque voy a tener que utilizarla despues en otras funciones
-        if(this->size==this->reservedSize) //Si quiero cargar mas datos de los que elegi por defecto voy a hacer realloc
-        {
-            aux= (void**) realloc(this->pElements, sizeof(void*)*(this->reservedSize + AL_INCREMENT));
-            if(aux!=NULL)
-            {
-                this->pElements = aux;
-                this->reservedSize = this->reservedSize + AL_INCREMENT;
-            }
-            else
-            {
-                flag=1;
-            }
-        } //Esta funcion es resize up, despues la llamo, tambien la necesito para al_push, etc...
-
-        //Con el size podemos saber en que posicion vamos a cargar la estructura
-        if(flag==0) //Si pudo agregar el elemento entonces hago lo siguiente:
+        if(resizeUp(this)==0) //Si pudo agregar el elemento entonces hago lo siguiente:
         {
             *(this->pElements+this->size) = pElement; //Si fuese un vector lo haria asi: this->pElements[this->size]
             this->size++; //Para que cuando tenga que cargar otro elemento no me lo pise
             returnAux=0;
         }
-
-    }
+    } //Esta funcion es resize up, despues la llamo, tambien la necesito para al_push, etc...
 
     return returnAux;
 }
@@ -158,6 +141,7 @@ void* al_get(ArrayList* this, int index)
     if(this!=NULL && index>=0 && index<this->size)
     {
        returnAux = *(this->pElements+index);
+
     }
 
     return returnAux;
@@ -273,14 +257,35 @@ int al_clear(ArrayList* this)
  */
 ArrayList* al_clone(ArrayList* this)
 {
-    ArrayList* returnAux = NULL;
+    void* returnAux = NULL;
+    void* pElement2;
+    ArrayList* lista2;
+    int i;
 
     if(this!=NULL)
     {
-        returnAux=this;
+        lista2=al_newArrayList();
+
+        if(lista2!=NULL)
+        {
+            for(i=0; i<this->size; i++)
+            {
+                pElement2=al_get(this,i);
+                if(al_add(lista2, pElement2)==-1)
+                {
+                    returnAux=NULL;
+                    break;
+                }
+            }
+
+            if(this->size==lista2->size) //Si no está vacia entra a la condicion
+            {
+                returnAux=lista2;
+            }
+        }
     }
 
-    return returnAux;
+    return returnAux ;
 }
 
 
@@ -301,16 +306,18 @@ int al_push(ArrayList* this, int index, void* pElement)
 
     if(this!=NULL && pElement!=NULL && index>=0 && index<=this->size) //En este caso <= porque aun no hice el al_add
     {
-            al_add(this,pElement);
-
-            for(i=index;i<this->size;i++)
+            if(!resizeUp(this));
             {
-                *(this->pElements+i+1)=*(this->pElements+i);
+                for(i=index;i<this->size;i++)
+                {
+                    *(this->pElements+i+1)=*(this->pElements+i);
+                }
+
+                *(this->pElements+index)=pElement;
+                this->size++;
+
+                returnAux=0;
             }
-
-            *(this->pElements+index)=pElement;
-
-            returnAux=0;
     }
 
     return returnAux;
@@ -392,10 +399,28 @@ void* al_pop(ArrayList* this,int index)
 ArrayList* al_subList(ArrayList* this,int from,int to)
 {
     void* returnAux = NULL;
+    void* pElement2;
+    ArrayList* lista2;
+    int i;
 
-    if(this!=NULL && from>=0 && from<(this->size)-1 && to>=1 && to<=this->size)
+    if(this!=NULL && from>=0 && from<(this->size)-1 && to>=1 && to<=this->size && from<=to)
     {
+        lista2=al_newArrayList();
 
+        for(i=from; i<to; i++)
+        {
+            pElement2=al_get(this,i);
+            if(al_add(lista2, pElement2)==-1)
+            {
+                returnAux=NULL;
+                break;
+            }
+        }
+
+        if(al_isEmpty(lista2)==0) //Si no está vacia entra a la condicion
+        {
+            returnAux=lista2;
+        }
     }
 
     return returnAux ;
@@ -480,7 +505,6 @@ int al_sort(ArrayList* this, int (*pFunc)(void*,void*), int order)
                     returnAux=-1;
                     break;
                 }
-
             }
         }
     }
@@ -497,11 +521,21 @@ int al_sort(ArrayList* this, int (*pFunc)(void*,void*), int order)
 int resizeUp(ArrayList* this)
 {
     int returnAux = -1;
+    void** aux;
 
     if(this!=NULL)
     {
-        returnAux=0;
+        aux= (void**) realloc(this->pElements, sizeof(void*)*(this->reservedSize + AL_INCREMENT));
+
+        if(aux!=NULL)
+        {
+            this->pElements = aux;
+            this->reservedSize = this->reservedSize + AL_INCREMENT;
+            returnAux=0;
+        }
     }
+
+
 
     return returnAux;
 

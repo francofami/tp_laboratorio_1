@@ -38,11 +38,11 @@ int main(void)
         //startTesting(8); //al_remove OK
         //startTesting(9); //al_clear OK
         //startTesting(10); //al_clone OK
-        //startTesting(11); //al_push OK
+        startTesting(11); //al_push OK
         //startTesting(12); //al_indexOf OK
         //startTesting(13); //al_isEmpty OK
         //startTesting(14); //al_pop OK
-        //startTesting(15); //al_subList
+        //startTesting(15); //al_subList OK
         //startTesting(16); //al_containsAll OK
         //startTesting(17); //al_sort OK
 
