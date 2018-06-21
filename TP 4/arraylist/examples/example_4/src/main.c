@@ -28,23 +28,23 @@
 
 int main(void)
 {
-        //startTesting(1); //al_newArrayList OK
-        //startTesting(2); //al_add OK
-        //startTesting(3); //al_delete OK
-        //startTesting(4); //al_len OK
-        //startTesting(5); //al_get OK
-        //startTesting(6); //al_contains OK
-        //startTesting(7); //al_set OK
-        //startTesting(8); //al_remove OK
-        //startTesting(9); //al_clear OK
-        //startTesting(10); //al_clone OK
+        startTesting(1); //al_newArrayList OK
+        startTesting(2); //al_add OK
+        startTesting(3); //al_delete OK
+        startTesting(4); //al_len OK
+        startTesting(5); //al_get OK
+        startTesting(6); //al_contains OK
+        startTesting(7); //al_set OK
+        startTesting(8); //al_remove OK
+        startTesting(9); //al_clear OK
+        startTesting(10); //al_clone OK
         startTesting(11); //al_push OK
-        //startTesting(12); //al_indexOf OK
-        //startTesting(13); //al_isEmpty OK
-        //startTesting(14); //al_pop OK
-        //startTesting(15); //al_subList OK
-        //startTesting(16); //al_containsAll OK
-        //startTesting(17); //al_sort OK
+        startTesting(12); //al_indexOf OK
+        startTesting(13); //al_isEmpty OK
+        startTesting(14); //al_pop OK
+        startTesting(15); //al_subList OK
+        startTesting(16); //al_containsAll OK
+        startTesting(17); //al_sort OK
 
 
     return 0;
