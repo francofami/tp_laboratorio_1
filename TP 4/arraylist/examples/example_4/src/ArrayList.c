@@ -98,11 +98,6 @@ int al_deleteArrayList(ArrayList* this)
 
     if(this!=NULL)
     {
-        for(i=0;i<this->len(this);i++)
-        {
-            al_remove(this,i);
-        }
-
         free(this);
         retorno=0;
     }
@@ -141,7 +136,6 @@ void* al_get(ArrayList* this, int index)
     if(this!=NULL && index>=0 && index<this->len(this))
     {
        returnAux = *(this->pElements+index);
-
     }
 
     return returnAux;
@@ -215,8 +209,7 @@ int al_remove(ArrayList* this,int index)
 
     if(this!=NULL && index>=0 && index<this->len(this))
     {
-        *(this->pElements+index) = NULL;
-        this->size--;
+        returnAux = resizeDown(this, index);
         returnAux=0;
     }
 
@@ -380,8 +373,8 @@ void* al_pop(ArrayList* this,int index)
 
     if(this!=NULL && index>=0 && index<this->len(this))
     {
-        returnAux=*(this->pElements+index);
-        al_remove(this,index);
+        returnAux = *(this->pElements+index);
+        contract(this,index);
     }
 
     return returnAux;
@@ -573,11 +566,48 @@ int expand(ArrayList* this,int index)
  */
 int contract(ArrayList* this,int index)
 {
-    int returnAux = -1;
+    int returnAux = -1,i;
 
-    if(this!=NULL && index>=0 && index<this->len(this))
+    if(this != NULL && index >= 0 && index < this->size)
     {
-        returnAux=0;
+        for(i=index;i<this->len(this);i++){
+            *(this->pElements+i) = *(this->pElements+i+1);
+            returnAux = 0;
+        }
+        this->size--;
+    }
+    return returnAux;
+}
+
+int resizeDown(ArrayList* this, int index)
+{
+    int returnAux = -1;
+    void* pAux;
+    int i;
+
+    if(this != NULL)
+    {
+        if(this->len(this) < this->reservedSize)
+        {
+            pAux = realloc(this->pElements, sizeof(void*) * this->reservedSize);
+
+            if(pAux != NULL)
+            {
+                for(i=this->len(this); i>=index; i--)
+                {
+                    *(this->pElements+i) = *(this->pElements+i-1);
+                }
+
+                this->pElements = pAux;
+                this->size = al_len(this);
+                this->size--;
+
+                returnAux = 0;
+            }
+        }
+
+        returnAux = 0;
+
     }
 
     return returnAux;
