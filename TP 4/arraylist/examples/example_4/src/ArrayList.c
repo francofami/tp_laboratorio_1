@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/ArrayList.h"
+#include "ArrayList.h"
 
 // funciones privadas
 int resizeUp(ArrayList* this);
@@ -205,14 +205,8 @@ int al_set(ArrayList* this, int index,void* pElement)
  */
 int al_remove(ArrayList* this,int index)
 {
-    int returnAux=-1;
-
-    if(this!=NULL && index>=0 && index<this->len(this))
-    {
-        returnAux = resizeDown(this, index);
-        returnAux=0;
-    }
-
+    int returnAux = -1;
+    returnAux = contract(this, index);
     return returnAux;
 }
 
@@ -301,13 +295,11 @@ int al_push(ArrayList* this, int index, void* pElement)
     {
             if(!resizeUp(this));
             {
-                for(i=index;i<this->len(this);i++)
-                {
-                    *(this->pElements+i+1)=*(this->pElements+i);
-                }
-
-                *(this->pElements+index)=pElement;
-                this->size++;
+                for(i=this->size; i>index; i--){
+            this->pElements[i] = this->pElements[i-1];
+        }
+        this->pElements[index] = pElement;
+        this->size++;
 
                 returnAux=0;
             }
@@ -608,6 +600,34 @@ int resizeDown(ArrayList* this, int index)
 
         returnAux = 0;
 
+    }
+
+    return returnAux;
+}
+
+ArrayList* al_filter(ArrayList* listIn , int (*functionFilter)(void*))
+{
+    ArrayList* returnAux=NULL;
+    int i;
+    int length;
+
+
+    if(listIn!=NULL && functionFilter!=NULL)
+    {
+        returnAux=al_newArrayList();
+
+        if(returnAux!=NULL)
+        {
+            length=listIn->len(listIn);
+
+            for(i=0;i<length;i++)
+            {
+                if(functionFilter(listIn->get(listIn,i))==1)
+                {
+                    returnAux->add(returnAux,listIn->get(listIn,i));
+                }
+            }
+        }
     }
 
     return returnAux;
