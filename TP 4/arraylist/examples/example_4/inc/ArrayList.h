@@ -236,4 +236,12 @@ int contract(ArrayList* this,int index);
 int resizeUp(ArrayList* this);
 int expand(ArrayList* this,int index);
 int contract(ArrayList* this,int index);
+
+/** \brief Crea una nueva lista a partir de otra pasando por un filtro.
+ *
+ * \param void* ArrayList* al_filter(ArrayList* listIn) Un arraylist y un puntero a función
+ * \return Araylist Una lista nueva filtrada
+ *
+ */
+ArrayList* al_filter(ArrayList* listIn , int (*functionFilter)(void*));
 //___________________
